@@ -6,3 +6,4 @@ https://youtu.be/VRgl7JjN0mI
 - AI Units with couple of states.
 https://youtu.be/SUt8yZUqmgw
 
+Some of my recent projects: https://partyhard.itch.io/
