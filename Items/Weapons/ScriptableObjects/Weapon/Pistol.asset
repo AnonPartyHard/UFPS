@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ac8b0b83783e424e8a7d1742df057d3, type: 3}
+  m_Name: Pistol
+  m_EditorClassIdentifier: 
+  _name: Pistol
+  _propModel: {fileID: 2742256737506565827, guid: f35118746f9f03943af9d049166670af, type: 3}
+  _viewModel: {fileID: 9152814317871656594, guid: 780759c71789c264a8291328d299971f, type: 3}
+  _bulletData: {fileID: 11400000, guid: f842e4d7694496046b40b7fbb8d928ea, type: 2}
+  _weaponType: 1
+  _runtimeAnimatorController: {fileID: 9100000, guid: 5303a953b182cb5438fa305c21e795fe, type: 2}
+  _fireRate: 0.1
+  _capacity: 30
+  _damage: 7
+  _recoilStrengh: 1
+  _weaponFireMode: 1

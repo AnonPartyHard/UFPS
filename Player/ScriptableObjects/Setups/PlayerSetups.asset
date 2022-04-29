@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c34679d22dd83d4799633570371de9f, type: 3}
+  m_Name: PlayerSetups
+  m_EditorClassIdentifier: 
+  _jumpForce: 350
+  _jumpForceMultiplier: 100
+  _wallPushForce: 350
+  _groundMoveSpeed: 150
+  _groundControlMultiplier: 10
+  _airMoveSpeed: 10
+  _wallSlideSpeed: 2500
+  _groundDrag: 5
+  _airDrag: 0
+  _airControlMultiplier: 15
+  _sprintSpeed: 250
+  _duckSpeed: 50
+  _slideDrag: 0
+  _slideLength: 0.75
+  _fieldOfView: 70
+  _camSensitivity: 25
+  _camSensitivityMultiplier: 2
+  _camSmooth: 10
+  _camTransitionsSmooth: 10
+  _camRunOffset: 0.5
+  _camWallRunOffset: 3
+  _camJumpOffsetMultiplier: 0.15
+  _camSprintAdditionalFOV: 10
+  _camIdleNoiseAmpFreq:
+  - 0.2
+  - 0.3
+  _camDuckNoiseAmpFreq:
+  - 0.35
+  - 0.75
+  _camRunNoiseAmpFreq:
+  - 0.75
+  - 0.25
+  _camSprintNoiseAmpFreq:
+  - 1.25
+  - 0.2
+  _viewLimitAngle: 89

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ac8b0b83783e424e8a7d1742df057d3, type: 3}
+  m_Name: Plasmagun
+  m_EditorClassIdentifier: 
+  _name: Plasmagun
+  _propModel: {fileID: 8646969496718389238, guid: c6db7517a6dbee54b97c2a95a7b86c11, type: 3}
+  _viewModel: {fileID: 8586319703937194039, guid: 2eea94f4d28fad345879f93f34c110bd, type: 3}
+  _bulletData: {fileID: 11400000, guid: 738e05ec9708cbe499923ddcb64ec9a2, type: 2}
+  _weaponType: 0
+  _runtimeAnimatorController: {fileID: 9100000, guid: 5cadb22e1431cf34e8cb6d519d2baa48, type: 2}
+  _fireRate: 2
+  _capacity: 2
+  _damage: 7
+  _recoilStrengh: 1
+  _weaponFireMode: 1
