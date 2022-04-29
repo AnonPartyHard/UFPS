@@ -367,6 +367,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _inputs: {fileID: 11400000, guid: 2d6768f92c2021141a45f4678247c662, type: 2}
   _playerSetups: {fileID: 11400000, guid: de66f7f37ef9c594781597b9a7e0f7d3, type: 2}
+  _cameraSetups: {fileID: 11400000, guid: 1cccaf0a41352db4abc4a250c2f7043c, type: 2}
   _rigidbody: {fileID: 1028377242458605185}
   _groundSensor: {fileID: 1028377241564267812}
   _ceilSensor: {fileID: 1028377241317168834}

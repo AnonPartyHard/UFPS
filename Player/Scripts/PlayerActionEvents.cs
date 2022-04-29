@@ -1,5 +1,7 @@
 using UnityEngine;
 
+//TODO: provide events through Scriptable object later, delete this class
+
 public class PlayerActionEvents : MonoBehaviour
 {
     public delegate void WeaponAction(Weapon weapon);

@@ -79,6 +79,7 @@ public class PlayerMovementStatesManager : MonoBehaviour
         _currentState.ExitState(this);
         _currentState = state;
         _currentState.EnterState(this);
+        _determinant.MovementStateChangeEventChannel.StateChanged(state);
 
         //DEBUG
         if (_UIStateText != null)

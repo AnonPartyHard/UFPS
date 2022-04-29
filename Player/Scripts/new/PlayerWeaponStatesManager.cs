@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,6 +26,17 @@ public class PlayerWeaponStatesManager : MonoBehaviour
 
     private void Start()
     {
+        _determinant.MovementStateChangeEventChannel.onStateChanged += MovementStateChanged;
+    }
+
+    private void OnDestroy()
+    {
+        _determinant.MovementStateChangeEventChannel.onStateChanged -= MovementStateChanged;
+    }
+
+    private void MovementStateChanged(MovementBaseState newState)
+    {
+        // Debug.Log(newState);
     }
 
     private void Update()
