@@ -16,9 +16,12 @@ public class PlayerWeaponStatesManager : MonoBehaviour
     private WeaponIdentifier _pickingWeapon;
     private WeaponBaseState _currentState;
 
-    public PlayerDeterminant Determinant => _determinant;
-    public WeaponViewMono SecondaryWeapon => _secondaryWeapon;
-    public WeaponViewMono PrimaryyWeapon => _primaryyWeapon;
+    public WeaponDrawState DrawState = new WeaponDrawState();
+    public WeaponReadyState ReadyState = new WeaponReadyState();
+
+    // public PlayerDeterminant Determinant => _determinant;
+    // public WeaponViewMono SecondaryWeapon => _secondaryWeapon;
+    // public WeaponViewMono PrimaryyWeapon => _primaryyWeapon;
     public WeaponViewMono CurrentWeapon => _currentWeapon;
 
     //DEBUG
@@ -27,6 +30,7 @@ public class PlayerWeaponStatesManager : MonoBehaviour
     private void Start()
     {
         _determinant.MovementStateChangeEventChannel.onStateChanged += MovementStateChanged;
+        SwitchState(DrawState);
     }
 
     private void OnDestroy()
@@ -42,6 +46,7 @@ public class PlayerWeaponStatesManager : MonoBehaviour
     private void Update()
     {
         LookForInpit();
+        _currentState.UpdateState(this);
     }
 
     private void LookForInpit()
@@ -79,9 +84,10 @@ public class PlayerWeaponStatesManager : MonoBehaviour
         _currentWeapon.Weapon.Pick(_currentWeapon);
         Destroy(_pickingWeapon.gameObject);
         _pickingWeapon = null;
+        SwitchState(DrawState);
     }
 
-    private void SwitchState(WeaponBaseState state)
+    public void SwitchState(WeaponBaseState state)
     {
         if (_currentState != null)
             _currentState.ExitState(this);

@@ -63,14 +63,4 @@ public class WeaponViewMono : MonoBehaviour
 		foreach (ObjectToPool obj in _objectsToPool)
 			ObjectsPool.instance.AddObjectsPool(obj.Name, obj.GameObject, obj.Count);
 	}
-	
-	private void Update()
-	{
-		_weapon.Update(this); 
-	}
-	
-	private void FixedUpdate()
-	{
-		_weapon.FixedUpdate(this); 
-	}
 }

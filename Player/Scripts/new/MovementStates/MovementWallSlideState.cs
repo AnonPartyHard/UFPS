@@ -22,7 +22,9 @@ public class MovementWallSlideState : MovementBaseState
 
 	public override void EnterState(PlayerMovementStatesManager player)
 	{
-		_activeRay = Array.Find(player.Determinant.WallSensors, r => r.IsOverlap());
+		_activeRay = player.Determinant.RightWallSensor.IsOverlap()
+			? player.Determinant.RightWallSensor
+			: player.Determinant.LeftWallSensor;
 		_originVelocity = player.Determinant.Rigidbody.velocity;
 		_originVelocity.x = 0;
 		_originVelocity.y = 0;

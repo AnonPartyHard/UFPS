@@ -49,7 +49,7 @@ public class PlayerMovementStatesManager : MonoBehaviour
     private void Start()
     {
         _canClimb = true;
-        _currentState = IdleState;
+        _currentState = InAirState;
         _currentState.EnterState(this);
     }
 
@@ -62,7 +62,7 @@ public class PlayerMovementStatesManager : MonoBehaviour
     private void Update()
     {
         if (!_determinant.GroundSensor.IsOverlap() && _currentState != WallSlideState &&
-            _currentState != WallClimbState)
+            _currentState != WallClimbState && _currentState != InAirState)
             SwitchState(InAirState);
 
         UpdateMoveForce();

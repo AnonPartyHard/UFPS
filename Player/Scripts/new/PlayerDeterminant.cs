@@ -13,7 +13,8 @@ public class PlayerDeterminant : MonoBehaviour
     [SerializeField] private PlayerCamera _playerCamera;
     [SerializeField] private CameraShaker _cameraShaker;
     [SerializeField] private SphereSensor _forwardWallSensor;
-    [SerializeField] private SphereSensor[] _wallSensors;
+    [SerializeField] private SphereSensor _rightWallSensor;
+    [SerializeField] private SphereSensor _leftWallSensor;
     [SerializeField] private PlayerMovementStateChangeEventChannel _movementStateChangeEventChannel;
     public PlayerSetups PlayerSetups => _playerSetups;
     public CameraSetups CameraSetups => _cameraSetups;
@@ -24,7 +25,8 @@ public class PlayerDeterminant : MonoBehaviour
     public Collider UpperCollider => _upperCollider;
     public PlayerCamera PlayerCamera => _playerCamera;
     public CameraShaker CameraShaker => _cameraShaker;
-    public SphereSensor[] WallSensors => _wallSensors;
+    public SphereSensor RightWallSensor => _rightWallSensor;
+    public SphereSensor LeftWallSensor => _leftWallSensor;
     public SphereSensor ForwardWallSensor => _forwardWallSensor;
     public PlayerMovementStateChangeEventChannel MovementStateChangeEventChannel => _movementStateChangeEventChannel;
 

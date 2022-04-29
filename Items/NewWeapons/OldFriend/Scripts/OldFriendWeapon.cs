@@ -11,7 +11,7 @@ public class OldFriendWeapon : BaseWeapon
 
 	// private float _altFireRate;
 	// private int _burstCount;
-	private int _burstFired = 0;
+	// private int _burstFired = 0;
 
 	private float _recoilStrength;
 	private float _recoilQuench;
@@ -28,6 +28,7 @@ public class OldFriendWeapon : BaseWeapon
 
 	public override void Draw(WeaponViewMono weapon)
 	{
+		weapon.Animator.Play("OldFriend_draw");
 	}
 
 	public override void Pick(WeaponViewMono weapon)

@@ -13,14 +13,14 @@ public class MovementInAirState : MovementBaseState
 		{
 			if (player.Determinant.PlayerInput.IsKeyDown(InputKeys.JUMP))
 
-				if (Array.Exists(player.Determinant.WallSensors, r => r.IsOverlap()) &&
+				if (player.Determinant.RightWallSensor.IsOverlap() || player.Determinant.LeftWallSensor.IsOverlap() &&
 				    player.Determinant.Rigidbody.velocity.z != 0)
 					player.SwitchState(player.WallSlideState);
 		}
 		else
 		{
 			if (player.Determinant.PlayerInput.IsKeyPressed(InputKeys.JUMP))
-				if (Array.Exists(player.Determinant.WallSensors, r => r.IsOverlap()) &&
+				if (player.Determinant.RightWallSensor.IsOverlap() || player.Determinant.LeftWallSensor.IsOverlap() &&
 				    player.Determinant.Rigidbody.velocity.z != 0)
 					player.SwitchState(player.WallSlideState);
 		}
@@ -33,8 +33,8 @@ public class MovementInAirState : MovementBaseState
 	public override void EnterState(PlayerMovementStatesManager player)
 	{
 		player.Determinant.Rigidbody.drag = player.Determinant.PlayerSetups.AirDrag;
-		foreach (SphereSensor ray in player.Determinant.WallSensors)
-			ray.gameObject.SetActive(true);
+		player.Determinant.RightWallSensor.gameObject.SetActive(true);
+		player.Determinant.LeftWallSensor.gameObject.SetActive(true);
 	}
 
 	public override void UpdateState(PlayerMovementStatesManager player)

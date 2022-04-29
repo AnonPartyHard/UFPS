@@ -4,11 +4,12 @@ public class MovementIdleState : MovementBaseState
 {
 	private void TrackForInputs(PlayerMovementStatesManager player)
 	{
-		if (player.Determinant.PlayerInput.IsKeyPressed(InputKeys.JUMP))
+		if (player.Determinant.PlayerInput.IsKeyPressed(InputKeys.JUMP) && player.Determinant.GroundSensor.IsOverlap())
 			player.Determinant.Rigidbody.AddForce(
 				Vector3.up * player.Determinant.PlayerSetups.JumpForce *
 				player.Determinant.PlayerSetups.JumpForceMultiplier * Time.fixedDeltaTime,
 				ForceMode.Impulse);
+			
 
 		if (player.Determinant.PlayerInput.IsKeyDown(InputKeys.DUCK))
 			player.SwitchState(player.DuckState);
@@ -21,8 +22,8 @@ public class MovementIdleState : MovementBaseState
 	{
 		player.Determinant.Rigidbody.drag = player.Determinant.PlayerSetups.GroundDrag;
 		player.IsWallSliding = false;
-		foreach (SphereSensor ray in player.Determinant.WallSensors)
-			ray.gameObject.SetActive(false);
+		player.Determinant.RightWallSensor.gameObject.SetActive(false);
+		player.Determinant.LeftWallSensor.gameObject.SetActive(false);
 	}
 
 	public override void UpdateState(PlayerMovementStatesManager player)
