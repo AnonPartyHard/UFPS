@@ -30,6 +30,7 @@ public class WeaponViewMono : MonoBehaviour
 	[SerializeField] private Transform _firePoint;
 	[SerializeField] private List<ObjectToPool> _objectsToPool;
 
+	private PlayerWeaponStatesManager _playerWeaponStatesManager;
 	private PlayerDeterminant _playerDeterminant;
 	private Animator _animator;
 	private BaseWeapon _weapon;
@@ -51,6 +52,12 @@ public class WeaponViewMono : MonoBehaviour
 		get { return _playerDeterminant; }
 		set { _playerDeterminant = value; }
 	}
+	public PlayerWeaponStatesManager PlayerWeaponStatesManager
+	{
+		get { return _playerWeaponStatesManager; }
+		set { _playerWeaponStatesManager = value; }
+	}
+	
 
 	private void Awake()
 	{

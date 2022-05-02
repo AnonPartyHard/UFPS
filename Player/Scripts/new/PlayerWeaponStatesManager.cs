@@ -12,17 +12,17 @@ public class PlayerWeaponStatesManager : MonoBehaviour
 
     private WeaponViewMono _secondaryWeapon;
     private WeaponViewMono _primaryyWeapon;
-    private WeaponViewMono _currentWeapon;
+    private WeaponViewMono _currentWeaponMono;
     private WeaponIdentifier _pickingWeapon;
     private WeaponBaseState _currentState;
 
     public WeaponDrawState DrawState = new WeaponDrawState();
     public WeaponReadyState ReadyState = new WeaponReadyState();
 
-    // public PlayerDeterminant Determinant => _determinant;
+    public PlayerDeterminant Determinant => _determinant;
     // public WeaponViewMono SecondaryWeapon => _secondaryWeapon;
     // public WeaponViewMono PrimaryyWeapon => _primaryyWeapon;
-    public WeaponViewMono CurrentWeapon => _currentWeapon;
+    public WeaponViewMono CurrentWeaponMono => _currentWeaponMono;
 
     //DEBUG
     [SerializeField] private Text _stateText;
@@ -47,6 +47,11 @@ public class PlayerWeaponStatesManager : MonoBehaviour
     {
         LookForInpit();
         _currentState.UpdateState(this);
+    }
+
+    private void FixedUpdate()
+    {
+        _currentState.FixedUpdateState(this);
     }
 
     private void LookForInpit()
@@ -77,14 +82,20 @@ public class PlayerWeaponStatesManager : MonoBehaviour
         if (instatiatedMono.WeaponType == WeaponTypes.PRIMARY)
             _primaryyWeapon = instatiatedMono;
 
-        _animator.runtimeAnimatorController = instatiatedMono.AnimatorController;
-        instatiatedMono.Animator = _animator;
-        instatiatedMono.PlayerDeterminant = _determinant;
-        _currentWeapon = instatiatedMono;
-        _currentWeapon.Weapon.Pick(_currentWeapon);
+        DrawWeapon(instatiatedMono);
         Destroy(_pickingWeapon.gameObject);
         _pickingWeapon = null;
         SwitchState(DrawState);
+    }
+
+    private void DrawWeapon(WeaponViewMono weapon)
+    {
+        _currentWeaponMono = weapon;
+        _animator.runtimeAnimatorController = _currentWeaponMono.AnimatorController;
+        _currentWeaponMono.Animator = _animator;
+        _currentWeaponMono.PlayerDeterminant = _determinant;
+        _currentWeaponMono.PlayerWeaponStatesManager = this;
+        _currentWeaponMono.Weapon.Pick(_currentWeaponMono);
     }
 
     public void SwitchState(WeaponBaseState state)
