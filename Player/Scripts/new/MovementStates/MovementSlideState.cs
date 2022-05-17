@@ -1,5 +1,4 @@
 using System.Collections;
-using Unity.Mathematics;
 using UnityEngine;
 
 public class MovementSlideState : MovementBaseState
@@ -32,7 +31,8 @@ public class MovementSlideState : MovementBaseState
         player.Determinant.UpperCollider.enabled = false;
         player.Determinant.Rigidbody.drag = player.Determinant.PlayerSetups.SlideDrag;
         _stateCoroutine = player.StartCoroutine(StateCoroutine(player));
-        // player.Determinant.PlayerCamera.Lock(80f,30f, player.transform.forward);
+        player.Determinant.PlayerRepresentationAnimator.BoundConstraintsToTargets();
+        player.Determinant.PlayerRepresentationAnimator.CrossFade("Slide", 0.2f, new int[2] { 0, 1 });
     }
 
     public override void UpdateState(PlayerMovementStatesManager player)
@@ -42,10 +42,10 @@ public class MovementSlideState : MovementBaseState
 
     public override void FixedUpdateState(PlayerMovementStatesManager player)
     {
-        player.Determinant.PlayerCamera.PositionOffsetUpdate(-Vector3.up,
+        player.Determinant.PlayerCamera.PositionOffsetUpdate(Vector3.down * 0.8f,
             player.Determinant.CameraSetups.CameraTransitionsSmooth);
 
-        player.Determinant.PlayerCamera.RotationOffsetUpdate(Quaternion.Euler(-2f,0f,0f),
+        player.Determinant.PlayerCamera.RotationOffsetUpdate(Quaternion.Euler(-15f,0f,0f),
             player.Determinant.CameraSetups.CameraTransitionsSmooth);
 
         //CAMERA NOISE
@@ -57,8 +57,9 @@ public class MovementSlideState : MovementBaseState
         player.Determinant.UpperCollider.enabled = true;
         player.Determinant.Rigidbody.drag = player.Determinant.PlayerSetups.GroundDrag;
         player.StopCoroutine(_stateCoroutine);
-        // player.Determinant.PlayerCamera.Unlock();
         _stateCoroutine = null;
+
+        player.Determinant.PlayerRepresentationAnimator.UnBoundConstraints();
     }
 
 

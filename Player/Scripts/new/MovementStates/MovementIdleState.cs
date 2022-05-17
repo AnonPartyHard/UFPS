@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class MovementIdleState : MovementBaseState
 {
+	private Quaternion _repForceTargetRot;
+	private Quaternion _repSmoothRot;
+	private bool _forceRotating = false;
 	private void TrackForInputs(PlayerMovementStatesManager player)
 	{
 		if (player.Determinant.PlayerInput.IsKeyPressed(InputKeys.JUMP) && player.Determinant.GroundSensor.IsOverlap())
@@ -24,12 +27,63 @@ public class MovementIdleState : MovementBaseState
 		player.IsWallSliding = false;
 		player.Determinant.RightWallSensor.gameObject.SetActive(false);
 		player.Determinant.LeftWallSensor.gameObject.SetActive(false);
+		player.Determinant.PlayerRepresentationAnimator.CrossFade("RunningTree", 0.2f, new int[2] { 0, 1 });
+		_repForceTargetRot = player.Determinant.PlayerCamera.CameraPivot.localRotation * Quaternion.Euler(0, -20f, 0);
+		_repSmoothRot = _repForceTargetRot;
+
 	}
 
 	public override void UpdateState(PlayerMovementStatesManager player)
 	{
+		player.Determinant.PlayerRepresentationAnimator.AnimateRunTree(5f);
 		TrackForInputs(player);
+		TrackRepresentationAngle(player);
 	}
+
+	private void TrackRepresentationAngle(PlayerMovementStatesManager player)
+    {
+		float angle = Vector3.Angle(player.Determinant.PlayerCamera.CameraPivot.forward, player.Determinant.PlayerRepresentationAnimator.Reporesentation.transform.forward);
+		Vector3 cross = Vector3.Cross(player.Determinant.PlayerCamera.CameraPivot.forward, player.Determinant.PlayerRepresentationAnimator.Reporesentation.transform.forward);
+
+		if(angle > 0f && cross.y > 0 && !_forceRotating)
+        {
+			player.Determinant.PlayerRepresentationAnimator.CrossFade("TurnLeft", 0.2f, new int[1] {0});
+
+			_repSmoothRot = _repSmoothRot * Quaternion.Euler(0, -85f, 0);
+		}
+		
+		if(angle > 0.1f && cross.y > 0)
+        {
+			_forceRotating = true;
+			player.Determinant.PlayerRepresentationAnimator.Reporesentation.localRotation = player.Determinant.PlayerCamera.CameraPivot.localRotation;
+		} else
+        {
+			_forceRotating = false;
+		}
+
+        if (angle > 130f && cross.y < 0 && !_forceRotating)
+        {
+			player.Determinant.PlayerRepresentationAnimator.CrossFade("TurnRight", 0.2f, new int[1] {0});
+
+            _repSmoothRot = _repSmoothRot * Quaternion.Euler(0, 85F, 0);
+        }
+
+        if (angle > 130.1f && cross.y < 0)
+        {
+            _forceRotating = true;
+            player.Determinant.PlayerRepresentationAnimator.Reporesentation.localRotation = player.Determinant.PlayerCamera.CameraPivot.localRotation * 
+				Quaternion.Euler(0, -130f, 0);
+        }
+        else
+        {
+            _forceRotating = false;
+        }
+
+        if (!_forceRotating)
+            player.Determinant.PlayerRepresentationAnimator.Reporesentation.localRotation = Quaternion.Slerp(
+				player.Determinant.PlayerRepresentationAnimator.Reporesentation.localRotation,
+				_repSmoothRot, 1f * Time.fixedDeltaTime);
+    }
 
 	public override void FixedUpdateState(PlayerMovementStatesManager player)
 	{
@@ -50,5 +104,6 @@ public class MovementIdleState : MovementBaseState
 
 	public override void ExitState(PlayerMovementStatesManager player)
 	{
-	}
+		player.Determinant.PlayerRepresentationAnimator.transform.localRotation = Quaternion.identity;
+    }
 }

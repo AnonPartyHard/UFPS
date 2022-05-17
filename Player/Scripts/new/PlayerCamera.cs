@@ -1,13 +1,14 @@
 using System.Collections;
 using Cinemachine;
-using Unity.Mathematics;
 using UnityEngine;
 public class PlayerCamera : MonoBehaviour
 {
     [SerializeField] private PlayerDeterminant _determinant;
     [SerializeField] private Transform _camera;
+    [SerializeField] private Transform _cameraPivot;
     [SerializeField] private Transform _cameraAnchor;
     [SerializeField] private bool _enabled;
+    [SerializeField] private bool _smooth;
 
     private float _yAngle;
     private float _xAngle;
@@ -16,20 +17,11 @@ public class PlayerCamera : MonoBehaviour
     private CinemachineVirtualCamera _vCam;
     private Vector3 _cameraOriginPosition;
 
-    // private bool _locked = false;
-
-    // private float _lockedX;
-    // private float _lockedY;
-
-    // private Quaternion _lockedRotation;
-    // private float _lockY;
-    // private float _lockX;
-
-
     //DEBUG
     public Transform _lookAtTarget;
 
     public Transform CameraAnchor => _cameraAnchor;
+    public Transform CameraPivot => _cameraPivot;
 
     public CinemachineVirtualCamera VirtualCamera => _vCam;
 
@@ -42,7 +34,6 @@ public class PlayerCamera : MonoBehaviour
     private void Awake()
     {
         _vCam = _camera.GetComponent<CinemachineVirtualCamera>();
-        // _lockX = _determinant.PlayerSetups.CameraAngleLimit;
     }
 
     private void Start()
@@ -68,10 +59,6 @@ public class PlayerCamera : MonoBehaviour
         //         Lock(30f, 30f, Quaternion.LookRotation(_cameraAnchor.forward));
         //     else
         //         Unlock();
-
-        // if (Input.GetKey(KeyCode.U))
-        //     UpdateLockRotation(Quaternion.LookRotation(-_cameraAnchor.forward),
-        //         _determinant.PlayerSetups.CameraTransitionsSmooth);
     }
 
     public void LookAt(Transform target, float duration, float smooth, bool disableCamera)
@@ -93,21 +80,23 @@ public class PlayerCamera : MonoBehaviour
         _xAngle -= _determinant.PlayerInput.GetMouseVector().y * _determinant.CameraSetups.CameraSensitivity *
                    _determinant.CameraSetups.CameraSensitivityMultiplier * Time.fixedDeltaTime;
 
-        _xAngle = Mathf.Clamp(_xAngle, -_determinant.CameraSetups.FieldOfView, _determinant.CameraSetups.FieldOfView);
-
-        // if (_locked)
-        //     _yAngle = Mathf.Clamp(_yAngle, _lockedY - _lockY, _lockedY + _lockY);
-
-        // _xAngle = Mathf.Clamp(_xAngle, _lockedX - _lockX, _lockedX + _lockX);
+        _xAngle = Mathf.Clamp(_xAngle, -_determinant.CameraSetups.CameraAngleLimit, _determinant.CameraSetups.CameraAngleLimit);
     }
 
     private void RotateAnchor()
     {
-        _determinant.Rigidbody.MoveRotation(Quaternion.Slerp(_determinant.Rigidbody.rotation,
-            Quaternion.Euler(0, _yAngle, 0), _determinant.CameraSetups.CameraSmooth * Time.fixedDeltaTime));
+        if (_smooth)
+        {
+            _cameraPivot.localRotation = Quaternion.Slerp(_cameraPivot.localRotation, Quaternion.Euler(0, _yAngle, 0),
+                _determinant.CameraSetups.CameraSmooth * Time.fixedDeltaTime);
 
-        _cameraAnchor.localRotation = Quaternion.Slerp(_cameraAnchor.localRotation, Quaternion.Euler(_xAngle, 0, 0),
-            _determinant.CameraSetups.CameraSmooth * Time.fixedDeltaTime);
+            _cameraAnchor.localRotation = Quaternion.Slerp(_cameraAnchor.localRotation, Quaternion.Euler(_xAngle, 0, 0),
+                _determinant.CameraSetups.CameraSmooth * Time.fixedDeltaTime);
+        } else
+        {
+            _cameraPivot.localRotation = Quaternion.Euler(0, _yAngle, 0);
+            _cameraAnchor.localRotation = Quaternion.Euler(_xAngle, 0, 0);
+        }
 
         _cameraAnchor.localRotation *= _offsetRotation;
         _cameraAnchor.localPosition = _cameraOriginPosition + _offsetPosition;
@@ -122,29 +111,6 @@ public class PlayerCamera : MonoBehaviour
     {
         _offsetPosition = Vector3.Slerp(_offsetPosition, targetPosition, smooth * Time.fixedDeltaTime);
     }
-
-    // public void Lock(float x, float y, Quaternion lockRotation)
-    // {
-    //     _lockedY = lockRotation.eulerAngles.y;
-    //     _lockedX = lockRotation.eulerAngles.x;
-    //     _lockX = x;
-    //     _lockY = y;
-    //     _locked = true;
-    // }
-
-    // public void UpdateLockRotation(Quaternion rotation, float smooth)
-    // {
-    //     _lockedX = rotation.eulerAngles.x;
-    //     _lockedY = rotation.eulerAngles.y;
-    //     // _lockedX = Mathf.Lerp(_lockedX, rotation.eulerAngles.x, smooth * Time.fixedDeltaTime);
-    //     // _lockedY = Mathf.Lerp(_lockedY, rotation.eulerAngles.y, smooth * Time.fixedDeltaTime);
-    // }
-
-    // public void Unlock()
-    // {
-    //     _lockY = _determinant.PlayerSetups.CameraAngleLimit;
-    //     _locked = false;
-    // }
 
     private IEnumerator LookAtCoroutine(Transform target, float duration, float smooth, bool disableCamera)
     {

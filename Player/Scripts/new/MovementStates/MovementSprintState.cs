@@ -21,11 +21,15 @@ public class MovementSprintState : MovementBaseState
 	{
 		player.IsSprinting = true;
 		player.IsWallSliding = false;
-	}
+        player.Determinant.PlayerRepresentationAnimator.CrossFade("RunningTree", 0.2f, new int[2] { 0, 1 });
+    }
 
-	public override void UpdateState(PlayerMovementStatesManager player)
+    public override void UpdateState(PlayerMovementStatesManager player)
 	{
 		TrackForInputs(player);
+		player.Determinant.PlayerRepresentationAnimator.AnimateRunTree(5f);
+		player.Determinant.PlayerRepresentationAnimator.
+			AdjustRepresentationRotation(Quaternion.LookRotation(player.Determinant.PlayerCamera.CameraPivot.forward), 5f);
 	}
 
 	public override void FixedUpdateState(PlayerMovementStatesManager player)
@@ -45,8 +49,8 @@ public class MovementSprintState : MovementBaseState
 			player.Determinant.CameraSetups.CameraTransitionsSmooth);
 
 		player.Determinant.CameraShaker.SetFOV(player.Determinant.CameraSetups.FieldOfView +
-			player.Determinant.CameraSetups.CamSprintAdditionalFOV,
-			player.Determinant.CameraSetups.CameraTransitionsSmooth / 5f);
+			player.Determinant.CameraSetups.CamSprintAdditionalFOV * player.Determinant.Rigidbody.velocity.magnitude,
+			player.Determinant.CameraSetups.CameraTransitionsSmooth / 2.5f);
 
 		//CAMERA NOISE
 		player.Determinant.CameraShaker.SetGain(
@@ -58,5 +62,6 @@ public class MovementSprintState : MovementBaseState
 
 	public override void ExitState(PlayerMovementStatesManager player)
 	{
+
 	}
 }

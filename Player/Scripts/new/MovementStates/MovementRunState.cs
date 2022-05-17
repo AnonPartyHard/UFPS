@@ -25,11 +25,15 @@ public class MovementRunState : MovementBaseState
 
 	public override void EnterState(PlayerMovementStatesManager player)
 	{
-	}
+        //player.Determinant.PlayerRepresentationAnimator.CrossFade("RunningTree", 0.2f, new int[2] { 0, 1 });
+    }
 
 	public override void UpdateState(PlayerMovementStatesManager player)
 	{
 		TrackForInputs(player);
+		player.Determinant.PlayerRepresentationAnimator.AnimateRunTree(5f);
+		player.Determinant.PlayerRepresentationAnimator.
+			AdjustRepresentationRotation(Quaternion.LookRotation(player.Determinant.PlayerCamera.CameraPivot.forward), 5f);
 	}
 
 	public override void FixedUpdateState(PlayerMovementStatesManager player)

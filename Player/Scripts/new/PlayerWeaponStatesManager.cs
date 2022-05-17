@@ -5,21 +5,21 @@ using UnityEngine.UI;
 
 public class PlayerWeaponStatesManager : MonoBehaviour
 {
-    [SerializeField] private PlayerDeterminant _determinant;
+    [SerializeField] private PlayerDeterminant _playerDeterminant;
     [SerializeField] private RaySensor _raySensor;
     [SerializeField] private Transform _weaponContainer;
-    [SerializeField] private Animator _animator;
-
+    [SerializeField] private Animator _weaponAnimator;
+    //[SerializeField] private WeaponViewMono _bareHandsWeapon;
+    
     private WeaponViewMono _secondaryWeapon;
     private WeaponViewMono _primaryyWeapon;
     private WeaponViewMono _currentWeaponMono;
     private WeaponIdentifier _pickingWeapon;
     private WeaponBaseState _currentState;
 
-    public WeaponDrawState DrawState = new WeaponDrawState();
     public WeaponReadyState ReadyState = new WeaponReadyState();
-
-    public PlayerDeterminant Determinant => _determinant;
+    private WeaponViewMono _weapon;
+    public PlayerDeterminant PlayerDeterminant => _playerDeterminant;
     // public WeaponViewMono SecondaryWeapon => _secondaryWeapon;
     // public WeaponViewMono PrimaryyWeapon => _primaryyWeapon;
     public WeaponViewMono CurrentWeaponMono => _currentWeaponMono;
@@ -29,34 +29,38 @@ public class PlayerWeaponStatesManager : MonoBehaviour
 
     private void Start()
     {
-        _determinant.MovementStateChangeEventChannel.onStateChanged += MovementStateChanged;
-        SwitchState(DrawState);
+        //_playerDeterminant.MovementStateChangeEventChannel.onStateChanged += MovementStateChanged;
+        SwitchState(ReadyState);
     }
 
     private void OnDestroy()
     {
-        _determinant.MovementStateChangeEventChannel.onStateChanged -= MovementStateChanged;
+        //_playerDeterminant.MovementStateChangeEventChannel.onStateChanged -= MovementStateChanged;
     }
 
-    private void MovementStateChanged(MovementBaseState newState)
-    {
-        // Debug.Log(newState);
-    }
+    //private void MovementStateChanged(MovementBaseState newState)
+    //{
+    //}
 
     private void Update()
     {
-        LookForInpit();
-        _currentState.UpdateState(this);
+        TrackForInputs();
+        if(_currentWeaponMono != null)
+            _currentState.UpdateState(this);
+
+        //_playerDeterminant.PlayerRepresentationAnimator.RightArmIK.position = _weapon.RightHandIKPoint.position;
+        //_playerDeterminant.PlayerRepresentationAnimator.LeftArmIK.position = _weapon.LeftHandIKPoint.position;
     }
 
     private void FixedUpdate()
     {
-        _currentState.FixedUpdateState(this);
+        if (_currentWeaponMono != null)
+            _currentState.FixedUpdateState(this);
     }
 
-    private void LookForInpit()
+    private void TrackForInputs()
     {
-        bool pick = _determinant.PlayerInput.IsKeyPressed(InputKeys.ACTION) && _raySensor.IsHit() &&
+        bool pick = _playerDeterminant.PlayerInput.IsKeyPressed(InputKeys.ACTION) && _raySensor.IsHit() &&
             _raySensor.Target.collider.gameObject.TryGetComponent(out _pickingWeapon);
 
         bool close = _pickingWeapon != null &&
@@ -85,17 +89,21 @@ public class PlayerWeaponStatesManager : MonoBehaviour
         DrawWeapon(instatiatedMono);
         Destroy(_pickingWeapon.gameObject);
         _pickingWeapon = null;
-        SwitchState(DrawState);
+        SwitchState(ReadyState);
     }
 
     private void DrawWeapon(WeaponViewMono weapon)
     {
         _currentWeaponMono = weapon;
-        _animator.runtimeAnimatorController = _currentWeaponMono.AnimatorController;
-        _currentWeaponMono.Animator = _animator;
-        _currentWeaponMono.PlayerDeterminant = _determinant;
+        _weaponAnimator.runtimeAnimatorController = _currentWeaponMono.AnimatorController;
+        _currentWeaponMono.Animator = _weaponAnimator;
+        _currentWeaponMono.PlayerDeterminant = _playerDeterminant;
         _currentWeaponMono.PlayerWeaponStatesManager = this;
         _currentWeaponMono.Weapon.Pick(_currentWeaponMono);
+
+        //_playerDeterminant.PlayerRepresentationAnimator.GiveControllToPoints(new RigLimbs[2] { RigLimbs.RIGHT_ARM, RigLimbs.LEFT_ARM });
+        //_playerDeterminant.PlayerRepresentationAnimator.CrossFade("Default", 0.2f, new int[1] { 1 });
+        _weapon = weapon;
     }
 
     public void SwitchState(WeaponBaseState state)

@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7319a59f8484e1144859369432d973d0, type: 3}
   m_Name: CameraSetups
   m_EditorClassIdentifier: 
-  _fieldOfView: 70
+  _fieldOfView: 75
   _camSensitivity: 25
   _camSensitivityMultiplier: 2
   _camSmooth: 10
   _camTransitionsSmooth: 10
-  _camRunOffset: 0.5
-  _camWallRunOffset: 3
-  _camJumpOffsetMultiplier: 0.15
-  _camSprintAdditionalFOV: 10
+  _camRunOffset: 2.5
+  _camWallRunOffset: 20
+  _camJumpOffsetMultiplier: 1
+  _camSprintAdditionalFOV: 1.5
   _camIdleNoiseAmpFreq:
   - 0.2
   - 0.3
@@ -33,4 +33,4 @@ MonoBehaviour:
   _camSprintNoiseAmpFreq:
   - 1.25
   - 0.2
-  _viewLimitAngle: 89
+  _viewLimitAngle: 85

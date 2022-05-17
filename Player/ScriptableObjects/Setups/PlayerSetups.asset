@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _jumpForce: 350
   _jumpForceMultiplier: 100
-  _wallPushForce: 350
+  _wallPushForce: 200
   _groundMoveSpeed: 150
   _groundControlMultiplier: 10
   _airMoveSpeed: 10
@@ -26,25 +26,7 @@ MonoBehaviour:
   _duckSpeed: 50
   _slideDrag: 0
   _slideLength: 0.75
-  _fieldOfView: 70
-  _camSensitivity: 25
-  _camSensitivityMultiplier: 2
-  _camSmooth: 10
-  _camTransitionsSmooth: 10
-  _camRunOffset: 0.5
-  _camWallRunOffset: 3
-  _camJumpOffsetMultiplier: 0.15
-  _camSprintAdditionalFOV: 10
-  _camIdleNoiseAmpFreq:
-  - 0.2
-  - 0.3
-  _camDuckNoiseAmpFreq:
-  - 0.35
-  - 0.75
-  _camRunNoiseAmpFreq:
-  - 0.75
-  - 0.25
-  _camSprintNoiseAmpFreq:
-  - 1.25
-  - 0.2
-  _viewLimitAngle: 89
+  _climbDuration: 0.4
+  _climbForce: 50
+  _climbUpForce: 1000
+  _climbUpForceMultiplier: 40

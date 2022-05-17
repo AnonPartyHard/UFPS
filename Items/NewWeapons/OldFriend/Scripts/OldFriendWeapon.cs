@@ -20,7 +20,7 @@ public class OldFriendWeapon : BaseWeapon
 	public override void Draw(WeaponViewMono weapon)
 	{
 		weapon.Animator.Play("OldFriend_draw");
-		weapon.StartCoroutine(ReadyCoroutine(weapon));
+		//weapon.StartCoroutine(ReadyCoroutine(weapon));
 	}
 
 	public override void Pick(WeaponViewMono weapon)
@@ -132,6 +132,6 @@ public class OldFriendWeapon : BaseWeapon
 	private IEnumerator ReadyCoroutine(WeaponViewMono weapon)
 	{
 		yield return new WaitForSeconds(_readyTime);
-		weapon.PlayerWeaponStatesManager.SwitchState(weapon.PlayerWeaponStatesManager.ReadyState);
+
 	}
 }

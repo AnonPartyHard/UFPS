@@ -1,11 +1,12 @@
-using System;
-using System.Text.RegularExpressions;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using UnityEngine.UI;
 
 public class PlayerMovementStatesManager : MonoBehaviour
 {
     [SerializeField] private PlayerDeterminant _determinant;
+    [SerializeField] private Animator _representationAnimator;
+    
 
     private Vector3 _movementForce;
     public bool _isSprinting;
@@ -27,6 +28,7 @@ public class PlayerMovementStatesManager : MonoBehaviour
     public Text _UIStateText;
     public PlayerDeterminant Determinant => _determinant;
     public Vector3 MovementForce => _movementForce;
+   
 
     public bool IsSprinting
     {
@@ -53,10 +55,12 @@ public class PlayerMovementStatesManager : MonoBehaviour
         _currentState.EnterState(this);
     }
 
+    
+
     private void UpdateMoveForce()
     {
-        _movementForce = _determinant.transform.forward * _determinant.PlayerInput.GetMovementVector().y +
-            _determinant.transform.right * _determinant.PlayerInput.GetMovementVector().x;
+        _movementForce = _determinant.PlayerCamera.CameraPivot.transform.forward * _determinant.PlayerInput.GetMovementVector().y +
+            _determinant.PlayerCamera.CameraPivot.transform.right * _determinant.PlayerInput.GetMovementVector().x;
     }
 
     private void Update()

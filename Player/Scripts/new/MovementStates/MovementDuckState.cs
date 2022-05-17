@@ -15,16 +15,20 @@ public class MovementDuckState : MovementBaseState
     public override void EnterState(PlayerMovementStatesManager player)
     {
         player.Determinant.UpperCollider.enabled = false;
+        player.Determinant.PlayerRepresentationAnimator.CrossFade("CrouchTree", 0.2f, new int[2] { 0, 1 });
     }
 
     public override void UpdateState(PlayerMovementStatesManager player)
     {
+        player.Determinant.PlayerRepresentationAnimator.AnimateRunTree(1f);
+        player.Determinant.PlayerRepresentationAnimator.
+            AdjustRepresentationRotation(Quaternion.LookRotation(player.Determinant.PlayerCamera.CameraPivot.forward),5f);
         TrackForInput(player);
     }
 
     public override void FixedUpdateState(PlayerMovementStatesManager player)
     {
-        player.Determinant.PlayerCamera.PositionOffsetUpdate(Vector3.down,
+        player.Determinant.PlayerCamera.PositionOffsetUpdate(Vector3.down * 0.5f,
             player.Determinant.CameraSetups.CameraTransitionsSmooth);
 
         player.Determinant.CameraShaker.SetFOV(player.Determinant.CameraSetups.FieldOfView,

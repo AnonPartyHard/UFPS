@@ -16,6 +16,7 @@ public class PlayerDeterminant : MonoBehaviour
     [SerializeField] private SphereSensor _rightWallSensor;
     [SerializeField] private SphereSensor _leftWallSensor;
     [SerializeField] private PlayerMovementStateChangeEventChannel _movementStateChangeEventChannel;
+    [SerializeField] private PlayerRepresentationAnimator _playerRepresentationAnimator;
     public PlayerSetups PlayerSetups => _playerSetups;
     public CameraSetups CameraSetups => _cameraSetups;
     public PlayerInputsSO PlayerInput => _inputs;
@@ -29,5 +30,6 @@ public class PlayerDeterminant : MonoBehaviour
     public SphereSensor LeftWallSensor => _leftWallSensor;
     public SphereSensor ForwardWallSensor => _forwardWallSensor;
     public PlayerMovementStateChangeEventChannel MovementStateChangeEventChannel => _movementStateChangeEventChannel;
+    public PlayerRepresentationAnimator PlayerRepresentationAnimator => _playerRepresentationAnimator;
 
 }

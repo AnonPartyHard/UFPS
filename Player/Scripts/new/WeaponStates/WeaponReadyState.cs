@@ -1,24 +1,26 @@
 
-using UnityEngine;
-
 public class WeaponReadyState : WeaponBaseState
 {
+	private void TrackForInputs(PlayerWeaponStatesManager weapon)
+    {
+		if (weapon.PlayerDeterminant.PlayerInput.IsKeyPressed(InputKeys.FIRE))
+			weapon.CurrentWeaponMono.Weapon.FireDown(weapon.CurrentWeaponMono);
+
+		if (weapon.PlayerDeterminant.PlayerInput.IsKeyPressed(InputKeys.DROP))
+			weapon.CurrentWeaponMono.Weapon.Drop(weapon.CurrentWeaponMono);
+
+		if (weapon.PlayerDeterminant.PlayerInput.IsKeyPressed(InputKeys.ALTFIRE))
+			weapon.CurrentWeaponMono.Weapon.AltFireDown(weapon.CurrentWeaponMono);
+	}
 	public override void EnterState(PlayerWeaponStatesManager weapon)
 	{
-		
+		if(weapon.CurrentWeaponMono != null)
+			weapon.CurrentWeaponMono.Weapon.Draw(weapon.CurrentWeaponMono);
 	}
 
 	public override void UpdateState(PlayerWeaponStatesManager weapon)
 	{
-		if(weapon.Determinant.PlayerInput.IsKeyPressed(InputKeys.FIRE))
-			weapon.CurrentWeaponMono.Weapon.FireDown(weapon.CurrentWeaponMono);
-		
-		if(weapon.Determinant.PlayerInput.IsKeyPressed(InputKeys.DROP))
-			weapon.CurrentWeaponMono.Weapon.Drop(weapon.CurrentWeaponMono);
-		
-		if(weapon.Determinant.PlayerInput.IsKeyPressed(InputKeys.ALTFIRE))
-			weapon.CurrentWeaponMono.Weapon.AltFireDown(weapon.CurrentWeaponMono);
-		
+		TrackForInputs(weapon);
 		weapon.CurrentWeaponMono.Weapon.Update(weapon.CurrentWeaponMono);
 	}
 

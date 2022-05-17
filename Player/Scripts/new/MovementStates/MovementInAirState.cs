@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using System.Linq;
 
 public class MovementInAirState : MovementBaseState
 {
@@ -14,14 +12,14 @@ public class MovementInAirState : MovementBaseState
 			if (player.Determinant.PlayerInput.IsKeyDown(InputKeys.JUMP))
 
 				if (player.Determinant.RightWallSensor.IsOverlap() || player.Determinant.LeftWallSensor.IsOverlap() &&
-				    player.Determinant.Rigidbody.velocity.z != 0)
+					player.Determinant.PlayerCamera.CameraPivot.InverseTransformDirection(player.Determinant.Rigidbody.velocity).z > 5f)
 					player.SwitchState(player.WallSlideState);
 		}
 		else
 		{
 			if (player.Determinant.PlayerInput.IsKeyPressed(InputKeys.JUMP))
 				if (player.Determinant.RightWallSensor.IsOverlap() || player.Determinant.LeftWallSensor.IsOverlap() &&
-				    player.Determinant.Rigidbody.velocity.z != 0)
+					player.Determinant.PlayerCamera.CameraPivot.InverseTransformDirection(player.Determinant.Rigidbody.velocity).z > 5f)
 					player.SwitchState(player.WallSlideState);
 		}
 
@@ -35,11 +33,15 @@ public class MovementInAirState : MovementBaseState
 		player.Determinant.Rigidbody.drag = player.Determinant.PlayerSetups.AirDrag;
 		player.Determinant.RightWallSensor.gameObject.SetActive(true);
 		player.Determinant.LeftWallSensor.gameObject.SetActive(true);
-	}
+        player.Determinant.PlayerRepresentationAnimator.CrossFade("Jump", 0.2f, new int[2] { 0, 1 });
+    }
 
 	public override void UpdateState(PlayerMovementStatesManager player)
 	{
 		TrackForInput(player);
+		player.Determinant.PlayerRepresentationAnimator.
+			AdjustRepresentationRotation(Quaternion.LookRotation(player.Determinant.PlayerCamera.CameraPivot.forward)
+			* Quaternion.Euler(0f,20f,0f), 5f);
 
 		if (player.Determinant.GroundSensor.IsOverlap())
 		{
@@ -58,6 +60,9 @@ public class MovementInAirState : MovementBaseState
 			player.MovementForce.normalized * player.Determinant.PlayerSetups.AirMoveSpeed *
 			player.Determinant.PlayerSetups.AirControlMultiplier * Time.fixedDeltaTime,
 			ForceMode.Acceleration);
+
+		player.Determinant.PlayerCamera.PositionOffsetUpdate(Vector3.zero,
+			player.Determinant.CameraSetups.CameraTransitionsSmooth);
 
 		player.Determinant.PlayerCamera.RotationOffsetUpdate(
 			Quaternion.Euler(
